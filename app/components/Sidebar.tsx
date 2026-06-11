@@ -186,7 +186,7 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
         </footer>
       </div>
       
-      <Link href="#sidebar" className="toggle" onClick={() => setIsInactive(!isInactive)}>
+      <Link href="#sidebar" className="toggle" onClick={(e) => {e.preventDefault(); setIsInactive(!isInactive);}}>
         Toggle
       </Link>
     </>
