@@ -10,9 +10,8 @@ import Image from "next/image";
 async function getMyInternalPosts(): Promise<ApiPost[]> {
   // 배포 환경과 로컬 환경 둘 다 호환되도록 절대 경로 대신 상대 경로 활용 혹은 환경 변수 처리 가능하지만,
   // Next.js 내부 fetch 시에는 절대 경로 주소가 필요하므로 안전하게 아래와 같이 처리합니다.
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-  const res = await fetch(`${baseUrl}/api/posts`, {
+  const res = await fetch(`/api/posts`, {
     next: { revalidate: 60 }, // 내 데이터이므로 캐싱 주기를 1분으로 단축해 실시간 반영성 극대화!
   });
 
