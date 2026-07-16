@@ -1,5 +1,7 @@
 // src/components/SectionPosts.tsx
 
+"use client";
+
 import type { JSX } from "react";
 import SectionHeader from "../SectionHeader";
 import Link from "next/link";
