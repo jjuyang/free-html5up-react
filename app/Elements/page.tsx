@@ -1,5 +1,7 @@
 // app/Elements/page.tsx
 
+"use client";
+
 import type { JSX } from "react";
 import Header from "../components/Header";
 import PageHeader from "../components/elements/PageHeader";
@@ -46,7 +48,6 @@ function Elements(): JSX.Element {
 
             {/* Table */}
             <Table />
-            
           </div>
           <div className="col-6 col-12-medium">
             {/* Buttons */}
