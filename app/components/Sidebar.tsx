@@ -3,7 +3,16 @@
 import { useState, useEffect, useRef, useCallback, type JSX } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { sidebarHeaderData, menuList, anteData, contactInfo, MenuItem, SubMenuItem, AnteItem } from "../data/sidebarData";
+import Image from "next/image";
+import {
+  sidebarHeaderData,
+  menuList,
+  anteData,
+  contactInfo,
+  MenuItem,
+  SubMenuItem,
+  AnteItem,
+} from "../data/sidebarData";
 
 interface SidebarProps {
   isInactive: boolean;
@@ -11,7 +20,6 @@ interface SidebarProps {
 }
 
 function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
-
   // 여러 서브메뉴의 상태를 객체로 관리
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
@@ -23,26 +31,29 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
   const calculatePosition = useCallback(() => {
     if (!sidebarRef.current) return;
 
-     // 모바일 환경이면 fixed 로직을 초기화하고 종료
+    // 모바일 환경이면 fixed 로직을 초기화하고 종료
     if (window.innerWidth <= 1280) {
       setIsFixed(false);
       setFixedTop(0);
       return;
     }
-    
+
     // fixed 상태에서도 컨텐츠의 전체 높이를 정확히 측정하기 위해 scrollHeight 사용
     const sidebarHeight = sidebarRef.current.scrollHeight;
     const viewportHeight = window.innerHeight;
     const scrollTop = window.scrollY;
 
     // 사이드바 하단이 화면 하단에 닿는 시점(임계값) 계산
-    const threshold = sidebarHeight > viewportHeight ? sidebarHeight - viewportHeight : 0;
+    const threshold =
+      sidebarHeight > viewportHeight ? sidebarHeight - viewportHeight : 0;
 
     // 데스크탑 화면(1280px 초과)에서만 스크롤에 따른 고정 로직 적용
     if (scrollTop > threshold) {
       setIsFixed(true);
       // 현재 뷰포트 내에서의 위치를 그대로 유지하도록 top 값 계산 (음수값 혹은 0)
-      setFixedTop(sidebarHeight > viewportHeight ? viewportHeight - sidebarHeight : 0);
+      setFixedTop(
+        sidebarHeight > viewportHeight ? viewportHeight - sidebarHeight : 0,
+      );
     } else {
       setIsFixed(false);
     }
@@ -50,9 +61,9 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
 
   const toggleMenu = (id: string, e: React.MouseEvent<HTMLSpanElement>) => {
     e.preventDefault(); // 링크 이동 방지
-    setOpenMenus(prev => ({
+    setOpenMenus((prev) => ({
       ...prev,
-      [id]: !prev[id]
+      [id]: !prev[id],
     }));
     // 메뉴가 열리거나 닫혀 높이가 변하므로 다음 틱에서 위치 재계산
     setTimeout(calculatePosition, 0);
@@ -61,19 +72,21 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
   const pathname = usePathname() ?? "/";
 
   useEffect(() => {
-    window.addEventListener('scroll', calculatePosition, { passive: true });
-    window.addEventListener('resize', calculatePosition);
-    calculatePosition();
+    window.addEventListener("scroll", calculatePosition, { passive: true });
+    window.addEventListener("resize", calculatePosition);
+    // 컴포넌트 마운트 후 초기 위치 계산
+    // 렌더링 단계에서 직접 호출되지 않으므로 안전함
+    requestAnimationFrame(calculatePosition);
 
     return () => {
-      window.removeEventListener('scroll', calculatePosition);
-      window.removeEventListener('resize', calculatePosition);
+      window.removeEventListener("scroll", calculatePosition);
+      window.removeEventListener("resize", calculatePosition);
     };
   }, [calculatePosition]);
 
   useEffect(() => {
     setIsInactive(true);
-    if(window.innerWidth <= 1280) {
+    if (window.innerWidth <= 1280) {
       setIsInactive(true);
     } else {
       setIsInactive(false);
@@ -82,12 +95,11 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
 
   return (
     <>
-      <div 
-        ref={sidebarRef} 
-        className={`inner ${isFixed ? 'is-fixed' : ''}`}
+      <div
+        ref={sidebarRef}
+        className={`inner ${isFixed ? "is-fixed" : ""}`}
         style={isFixed ? { top: `${fixedTop}px` } : {}}
       >
-
         {/* Search */}
         <section id="search" className="alt">
           <form method="post" action="#">
@@ -106,17 +118,29 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
                 {/* 서브메뉴가 있을 경우 */}
                 {item.submenu ? (
                   <>
-                    <span className={'opener ' + (openMenus[item.id] ? 'active' : '')} onClick={(e) => toggleMenu(item.id, e)}>
+                    <span
+                      className={
+                        "opener " + (openMenus[item.id] ? "active" : "")
+                      }
+                      onClick={(e) => toggleMenu(item.id, e)}
+                    >
                       {item.title}
                     </span>
                     {openMenus[item.id] && (
                       <ul>
                         {item.submenu.map((subItem: SubMenuItem) => (
                           <li key={subItem.id}>
-                            {subItem.link === '#' ? (
-                              <a href="#" onClick={(e) => e.preventDefault()}>{subItem.title}</a>
+                            {subItem.link === "#" ? (
+                              <a href="#" onClick={(e) => e.preventDefault()}>
+                                {subItem.title}
+                              </a>
                             ) : (
-                              <Link href={subItem.link} className={pathname === subItem.link ? 'active' : ''}>
+                              <Link
+                                href={subItem.link}
+                                className={
+                                  pathname === subItem.link ? "active" : ""
+                                }
+                              >
                                 {subItem.title}
                               </Link>
                             )}
@@ -125,17 +149,20 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
                       </ul>
                     )}
                   </>
+                ) : // 서브메뉴가 없을 경우
+                item.link === "#" ? (
+                  // 링크가 '#'인 경우는 실제 페이지 이동이 없는 메뉴로 간주
+                  <a href="#" onClick={(e) => e.preventDefault()}>
+                    {item.title}
+                  </a>
                 ) : (
-                  // 서브메뉴가 없을 경우
-                    item.link === '#' ? (
-                    // 링크가 '#'인 경우는 실제 페이지 이동이 없는 메뉴로 간주
-                    <a href="#" onClick={(e) => e.preventDefault()}>{item.title}</a>
-                  ) : (
-                    // 실제 페이지로 이동하는 메뉴
-                    <Link href={item.link} className={pathname === item.link ? 'active' : ''}>
-                      {item.title}
-                    </Link>
-                  )
+                  // 실제 페이지로 이동하는 메뉴
+                  <Link
+                    href={item.link}
+                    className={pathname === item.link ? "active" : ""}
+                  >
+                    {item.title}
+                  </Link>
                 )}
               </li>
             ))}
@@ -151,14 +178,23 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
             {anteData.map((item: AnteItem) => (
               <article key={item.id}>
                 <Link href={item.link} className="image">
-                  <img src={`/${item.image}`} alt={item.title} />
+                  <Image
+                    src={`/${item.image}`}
+                    alt={item.title}
+                    width={300}
+                    height={200}
+                  />
                 </Link>
                 <p>{item.description}</p>
               </article>
             ))}
           </div>
           <ul className="actions">
-            <li><a href="#" className="button">More</a></li>
+            <li>
+              <a href="#" className="button">
+                More
+              </a>
+            </li>
           </ul>
         </section>
 
@@ -167,26 +203,38 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
           <header className="major">
             <h2>{sidebarHeaderData[2]?.title}</h2>
           </header>
-            <p>{contactInfo.description}</p>
+          <p>{contactInfo.description}</p>
           <ul className="contact">
-            <li className="icon solid fa-envelope"><a href="#">{contactInfo.email}</a></li>
+            <li className="icon solid fa-envelope">
+              <a href="#">{contactInfo.email}</a>
+            </li>
             <li className="icon solid fa-phone">{contactInfo.phone}</li>
-            <li className="icon solid fa-home" dangerouslySetInnerHTML={{ __html: contactInfo.address }} />
+            <li
+              className="icon solid fa-home"
+              dangerouslySetInnerHTML={{ __html: contactInfo.address }}
+            />
           </ul>
         </section>
 
         {/* Footer */}
         <footer id="footer">
           <p className="copyright">
-            &copy; Untitled. All rights reserved. 
-            Demo Images: <Link href="https://unsplash.com">Unsplash</Link>. 
-            Design: <Link href="https://html5up.net">HTML5 UP</Link>.
+            &copy; Untitled. All rights reserved. Demo Images:{" "}
+            <Link href="https://unsplash.com">Unsplash</Link>. Design:{" "}
+            <Link href="https://html5up.net">HTML5 UP</Link>.
             {/* <a> 태그 대신 Next.js의 Link 컴포넌트를 사용하여 타입스크립트 기반 라우팅 최적화 */}
           </p>
         </footer>
       </div>
-      
-      <Link href="#sidebar" className="toggle" onClick={(e) => {e.preventDefault(); setIsInactive(!isInactive);}}>
+
+      <Link
+        href="#sidebar"
+        className="toggle"
+        onClick={(e) => {
+          e.preventDefault(); // 기본 동작(페이지 상단으로 이동) 방지
+          setIsInactive(!isInactive);
+        }}
+      >
         Toggle
       </Link>
     </>

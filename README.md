@@ -1,23 +1,28 @@
 # 📚 HTML5 UP Editorial - Next.js & TypeScript 마이그레이션
 
 > **HTML5 UP의 정교한 매거진 스타일 템플릿을 Next.js(App Router)와 TypeScript 기반의 고성능 컴포넌트 시스템으로 마이그레이션한 프로젝트입니다.**
+> **무료 이미지 unsplash.com / 무료 사이트 html5up.net**
 
 ---
 
 ## 🌐 Live Demo
-* **배포 주소:** [https://free-html5up-react.vercel.app/]
+
+- **배포 주소:** [https://free-html5up-react.vercel.app/]
+
 ---
 
 ## 🛠️ 사용 기술 및 개발 환경
-* **Framework:** Next.js 14+ (App Router)
-* **Language:** TypeScript
-* **State Management:** React Reactivity Hooks (useState, useEffect, useRef)
-* **Styling:** Vanilla CSS (원작 메인 레이아웃 및 디자인 시스템 100% 보존)
-* **Deployment:** Vercel
+
+- **Framework:** Next.js 14+ (App Router)
+- **Language:** TypeScript
+- **State Management:** React Reactivity Hooks (useState, useEffect, useRef)
+- **Styling:** Vanilla CSS (원작 메인 레이아웃 및 디자인 시스템 100% 보존)
+- **Deployment:** Vercel
 
 ---
 
 ## 📁 디렉토리 구조 (Directory Structure)
+
 ```text
 free-html5up-react-main/
 ├── app/                  # Next.js App Router (글로벌 라우팅 기지)
