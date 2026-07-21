@@ -48,7 +48,7 @@ function SectionPosts(): JSX.Element {
 
   return (
     <section>
-      <SectionHeader title="Ipsum sed dolor (자체 구축 API 연동)" />
+      <SectionHeader title="Ipsum sed dolor (API 연동)" />
       <div className="posts">
         {posts.map((post: ApiPost, index: number) => (
           <article key={post.id}>

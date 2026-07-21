@@ -37,7 +37,7 @@ export interface ContactInfo {
 // sidebar Header data
 export const sidebarHeaderData: SidebarHeader[] = [
   { id: "header1", title: "Menu" },
-  { id: "header2", title: "Ante interdum" },
+  { id: "header2", title: "Ante interdum(API)" },
   { id: "header3", title: "Get in touch" },
 ];
 
