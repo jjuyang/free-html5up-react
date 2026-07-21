@@ -27,8 +27,7 @@ function Table(): JSX.Element {
     // ⚡ 자체 제작한 API 서버에서 테이블 데이터 가져오기
     const fetchTableData = async () => {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "";
-        const res = await fetch(`${baseUrl}/api/table`);
+        const res = await fetch("/api/table");
 
         if (!res.ok) throw new Error("테이블 데이터를 불러오지 못했습니다.");
 
