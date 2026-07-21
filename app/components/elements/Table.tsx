@@ -1,4 +1,4 @@
-// src/components/elements/Table.jsx
+// src/components/elements/Table.tsx
 "use client"; // ⚡ 클라이언트에서 fetch 상태를 관리해야 하므로 추가합니다.
 
 import { useState, useEffect } from "react";
