@@ -6,44 +6,44 @@ const myPostsData: ApiPost[] = [
   {
     userId: 1,
     id: "post1",
-    title: "Interdum aenean",
+    title: "Amalfi, SA, Italy",
     description:
-      "Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+      "Dramatic cliffs, pastel-colored houses, and the shimmering Tyrrhenian Sea define the enchanting coastline of the Amalfi Coast.",
   },
   {
     userId: 2,
     id: "post2",
-    title: "Nulla amet dolore",
+    title: "Dumbo, New York, United States",
     description:
-      "Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+      "An iconic Brooklyn neighborhood offering cobblestone streets, industrial charm, and breathtaking views of the Manhattan Bridge.",
   },
   {
     userId: 3,
     id: "post3",
-    title: "Tempus ullamcorper",
+    title: "Dresden, Germany",
     description:
-      "Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+      "Known as the 'Florence on the Elbe,' boasting magnificent Baroque architecture, historic palaces, and rich cultural heritage.",
   },
   {
     userId: 4,
     id: "post4",
-    title: "Sed etiam facilis",
+    title: "Eiffel Tower, Paris, France",
     description:
-      "Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+      "The timeless symbol of romance and elegance, standing tall over the Champ de Mars in the heart of Paris.",
   },
   {
     userId: 5,
     id: "post5",
-    title: "Feugiat lorem aenean",
+    title: "Mürren, Lauterbrunnen, Switzerland",
     description:
-      "Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+      "A cozy car-free Alpine village perched high above the cliffside, offering sweeping views of the Eiger, Mönch, and Jungfrau peaks.",
   },
   {
     userId: 6,
     id: "post6",
-    title: "Amet varius aliquam",
+    title: "Santorini, Greece",
     description:
-      "Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+      "Famous for its whitewashed cliffside villages, iconic blue-domed churches, and unforgettable sunsets over the Aegean Sea.",
   },
 ];
 

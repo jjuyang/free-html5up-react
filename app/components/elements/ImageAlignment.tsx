@@ -13,7 +13,7 @@ function ImageAlignment(): JSX.Element {
             src="/images/pic01.jpg"
             alt="left-aligned"
             width={300}
-            height={200}
+            height={150}
           />
         </span>
         Lorem ipsum dolor sit accumsan interdum nisi, quis tincidunt felis
@@ -31,7 +31,7 @@ function ImageAlignment(): JSX.Element {
             src="/images/pic02.jpg"
             alt="right-aligned"
             width={300}
-            height={200}
+            height={150}
           />
         </span>
         Lorem ipsum dolor sit accumsan interdum nisi, quis tincidunt felis

@@ -4,14 +4,11 @@ import { useState, useEffect, useRef, useCallback, type JSX } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import {
-  sidebarHeaderData,
-  menuList,
-  anteData,
-  contactInfo,
+import type {
   MenuItem,
   SubMenuItem,
   AnteItem,
+  ContactInfo,
 } from "../data/sidebarData";
 
 interface SidebarProps {
@@ -19,7 +16,16 @@ interface SidebarProps {
   setIsInactive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+// ⚡ API 응답 데이터 타입을 정의합니다.
+interface SidebarData {
+  sidebarHeaderData: { title: string }[];
+  menuList: MenuItem[];
+  anteData: AnteItem[];
+  contactInfo: ContactInfo;
+}
+
 function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
+  const [sidebarData, setSidebarData] = useState<SidebarData | null>(null);
   // 여러 서브메뉴의 상태를 객체로 관리
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
@@ -27,6 +33,7 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const [isFixed, setIsFixed] = useState(false);
   const [fixedTop, setFixedTop] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
 
   const calculatePosition = useCallback(() => {
     if (!sidebarRef.current) return;
@@ -71,6 +78,27 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
 
   const pathname = usePathname() ?? "/";
 
+  // ⚡ API를 통해 사이드바 데이터를 가져옵니다.
+  useEffect(() => {
+    const fetchSidebarData = async () => {
+      try {
+        // 빌드 시점과 클라이언트 환경 모두에서 동작하도록 절대 경로를 사용합니다.
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+        const res = await fetch(`${baseUrl}/api/sidebar`);
+        if (!res.ok) {
+          throw new Error("사이드바 데이터를 불러오지 못했습니다.");
+        }
+        const data: SidebarData = await res.json();
+        setSidebarData(data);
+      } catch (error) {
+        console.error("사이드바 API 통신 에러:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSidebarData();
+  }, []);
+
   useEffect(() => {
     window.addEventListener("scroll", calculatePosition, { passive: true });
     window.addEventListener("resize", calculatePosition);
@@ -93,6 +121,11 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
     }
   }, [pathname, setIsInactive]);
 
+  // 데이터 로딩 중일 때 표시할 UI
+  if (loading) {
+    return <div className="inner">사이드바 로딩 중...</div>;
+  }
+
   return (
     <>
       <div
@@ -110,10 +143,10 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
         {/* Menu */}
         <nav id="menu">
           <header className="major">
-            <h2>{sidebarHeaderData[0]?.title}</h2>
+            <h2>{sidebarData?.sidebarHeaderData[0]?.title}</h2>
           </header>
           <ul>
-            {menuList.map((item: MenuItem) => (
+            {sidebarData?.menuList.map((item: MenuItem) => (
               <li key={item.id}>
                 {/* 서브메뉴가 있을 경우 */}
                 {item.submenu ? (
@@ -172,10 +205,10 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
         {/* Section */}
         <section>
           <header className="major">
-            <h2>{sidebarHeaderData[1]?.title}</h2>
+            <h2>{sidebarData?.sidebarHeaderData[1]?.title}</h2>
           </header>
           <div className="mini-posts">
-            {anteData.map((item: AnteItem) => (
+            {sidebarData?.anteData.map((item: AnteItem) => (
               <article key={item.id}>
                 <Link href={item.link} className="image">
                   <Image
@@ -201,17 +234,21 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
         {/* Section */}
         <section>
           <header className="major">
-            <h2>{sidebarHeaderData[2]?.title}</h2>
+            <h2>{sidebarData?.sidebarHeaderData[2]?.title}</h2>
           </header>
-          <p>{contactInfo.description}</p>
+          <p>{sidebarData?.contactInfo.description}</p>
           <ul className="contact">
             <li className="icon solid fa-envelope">
-              <a href="#">{contactInfo.email}</a>
+              <a href="#">{sidebarData?.contactInfo.email}</a>
             </li>
-            <li className="icon solid fa-phone">{contactInfo.phone}</li>
+            <li className="icon solid fa-phone">
+              {sidebarData?.contactInfo.phone}
+            </li>
             <li
               className="icon solid fa-home"
-              dangerouslySetInnerHTML={{ __html: contactInfo.address }}
+              dangerouslySetInnerHTML={{
+                __html: sidebarData?.contactInfo.address ?? "",
+              }}
             />
           </ul>
         </section>

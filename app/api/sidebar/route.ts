@@ -1,16 +1,20 @@
+// app/api/sidebar/route.ts
 import { NextResponse } from "next/server";
 import {
   sidebarHeaderData,
   menuList,
   anteData,
   contactInfo,
-} from "../../data/sidebarData";
+} from "@/app/data/sidebarData";
 
+/**
+ * 사이드바에 필요한 모든 데이터를 한번에 제공하는 API
+ */
 export async function GET() {
   return NextResponse.json({
-    headers: sidebarHeaderData,
-    menu: menuList,
-    miniPosts: anteData,
-    contact: contactInfo,
+    sidebarHeaderData,
+    menuList,
+    anteData,
+    contactInfo,
   });
 }
