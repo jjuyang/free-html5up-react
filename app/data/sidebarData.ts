@@ -29,7 +29,7 @@ export interface ContactInfo {
 // sidebar Header data
 export const sidebarHeaderData: SidebarHeader[] = [
   { id: "header1", title: "Menu" },
-  { id: "header2", title: "Ante interdum(API)" },
+  { id: "header2", title: "Post API 최신 3개" },
   { id: "header3", title: "Get in touch" },
 ];
 
