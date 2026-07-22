@@ -18,14 +18,6 @@ export interface MenuItem {
   submenu?: SubMenuItem[];
 }
 
-export interface AnteItem {
-  id: string;
-  image: string;
-  title: string;
-  description: string;
-  link: string;
-}
-
 // ⚡ ContactInfo 타입 추가
 export interface ContactInfo {
   description: string;
@@ -73,34 +65,6 @@ export const menuList: MenuItem[] = [
   { id: "menu8", title: "Maximus Erat", link: "#" },
   { id: "menu9", title: "Sapien Mauris", link: "#" },
   { id: "menu10", title: "Amet Lacinia", link: "#" },
-];
-
-// 2. Ante interdum data
-export const anteData: AnteItem[] = [
-  {
-    id: "ante1",
-    image: "images/pic07.jpg",
-    title: "Flight Above the Clouds",
-    description:
-      "An incredible view from the airplane window, capturing a soaring wing high above a sea of fluffy clouds.",
-    link: "#",
-  },
-  {
-    id: "ante2",
-    image: "images/pic08.jpg",
-    title: "Tower Bridge, London, UK",
-    description:
-      "A stunning aerial panorama of the iconic Tower Bridge spanning the River Thames against the vibrant London skyline.",
-    link: "#",
-  },
-  {
-    id: "ante3",
-    image: "images/pic09.jpg",
-    title: "Serene Coastal Ocean View",
-    description:
-      "A peaceful sandy beach with gentle ocean waves crashing along the coastline, creating a tranquil seascape.",
-    link: "#",
-  },
 ];
 
 // 3. Get in touch data

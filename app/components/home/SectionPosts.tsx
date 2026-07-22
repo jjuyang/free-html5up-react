@@ -4,23 +4,14 @@
 
 import { useState, useEffect } from "react";
 import type { JSX } from "react";
+import type { PostItem } from "@/app/data/postData";
 import SectionHeader from "../SectionHeader";
 import Link from "next/link";
-import type { ApiPost } from "@/app/types";
 import Image from "next/image";
 
 function SectionPosts(): JSX.Element {
-  const [posts, setPosts] = useState<ApiPost[]>([]);
+  const [posts, setPosts] = useState<PostItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const mockImages = [
-    "pic01.jpg",
-    "pic02.jpg",
-    "pic03.jpg",
-    "pic04.jpg",
-    "pic05.jpg",
-    "pic06.jpg",
-  ];
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -50,12 +41,16 @@ function SectionPosts(): JSX.Element {
     <section>
       <SectionHeader title="Ipsum sed dolor (API 연동)" />
       <div className="posts">
-        {posts.map((post: ApiPost, index: number) => (
+        {posts.map((post) => (
           <article key={post.id}>
             {/* 이미지 링크 영역 */}
-            <Link href="/Generic" className="image">
+            <Link href={post.link || "#"} className="image">
               <Image
-                src={`/images/${mockImages[index % mockImages.length]}`}
+                src={
+                  post.image
+                    ? `/${post.image}`
+                    : "https://placehold.co/600x400.png"
+                }
                 alt={post.title}
                 width={400}
                 height={250}

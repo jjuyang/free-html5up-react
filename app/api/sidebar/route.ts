@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import {
   sidebarHeaderData,
   menuList,
-  anteData,
   contactInfo,
 } from "@/app/data/sidebarData";
 
@@ -14,7 +13,6 @@ export async function GET() {
   return NextResponse.json({
     sidebarHeaderData,
     menuList,
-    anteData,
     contactInfo,
   });
 }

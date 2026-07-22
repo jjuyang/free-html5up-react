@@ -4,12 +4,8 @@ import { useState, useEffect, useRef, useCallback, type JSX } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import type {
-  MenuItem,
-  SubMenuItem,
-  AnteItem,
-  ContactInfo,
-} from "../data/sidebarData";
+import type { MenuItem, SubMenuItem, ContactInfo } from "../data/sidebarData";
+import { PostItem } from "../data/postData";
 
 interface SidebarProps {
   isInactive: boolean;
@@ -20,7 +16,6 @@ interface SidebarProps {
 interface SidebarData {
   sidebarHeaderData: { title: string }[];
   menuList: MenuItem[];
-  anteData: AnteItem[];
   contactInfo: ContactInfo;
 }
 
@@ -34,6 +29,8 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
   const [isFixed, setIsFixed] = useState(false);
   const [fixedTop, setFixedTop] = useState<number>(0);
   const [loading, setLoading] = useState(true);
+
+  const [miniPosts, setMiniPosts] = useState<PostItem[]>([]);
 
   const calculatePosition = useCallback(() => {
     if (!sidebarRef.current) return;
@@ -77,6 +74,24 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
   };
 
   const pathname = usePathname() ?? "/";
+
+  useEffect(() => {
+    const fetchMiniPosts = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+        // 메인 포스트 API 호출
+        const res = await fetch(`${baseUrl}/api/posts`);
+        if (res.ok) {
+          const data = await res.json();
+          // 상위 3개 데이터만 추출하여 상태에 저장
+          setMiniPosts(data.slice(0, 3));
+        }
+      } catch (error) {
+        console.error("미니포스트 API 에러:", error);
+      }
+    };
+    fetchMiniPosts();
+  }, []);
 
   // ⚡ API를 통해 사이드바 데이터를 가져옵니다.
   useEffect(() => {
@@ -207,21 +222,27 @@ function Sidebar({ isInactive, setIsInactive }: SidebarProps): JSX.Element {
           <header className="major">
             <h2>{sidebarData?.sidebarHeaderData[1]?.title}</h2>
           </header>
+
           <div className="mini-posts">
-            {sidebarData?.anteData.map((item: AnteItem) => (
-              <article key={item.id}>
-                <Link href={item.link} className="image">
+            {miniPosts.map((post) => (
+              <article key={post.id}>
+                <Link href={post.link || "#"} className="image">
                   <Image
-                    src={`/${item.image}`}
-                    alt={item.title}
+                    src={
+                      post.image
+                        ? `/${post.image}`
+                        : "https://placehold.co/600x400.png"
+                    }
+                    alt={post.title}
                     width={300}
                     height={200}
                   />
                 </Link>
-                <p>{item.description}</p>
+                <p>{post.description}</p>
               </article>
             ))}
           </div>
+
           <ul className="actions">
             <li>
               <a href="#" className="button">
